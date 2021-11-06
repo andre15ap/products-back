@@ -3,6 +3,15 @@ import { Request, Response } from 'express';
 import UserService from '../../services/users';
 
 class UserController {
+  async index(req: Request, res: Response) {
+    try {
+      const users = await UserService.getUsers();
+      return res.json(users);
+    } catch {
+      console.log('deu erro');
+      return res.sendStatus(500);
+    }
+  }
   async store(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;

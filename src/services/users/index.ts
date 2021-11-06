@@ -1,10 +1,16 @@
 import Database from '../../database';
 import { IUser, USER_COLLECTION } from '../../database/collections';
 
-import { hashPassword } from '../crypt';
-
+import { hashPassword } from '../../common/crypt';
 
 class UserService {
+  convertToClient(user: IUser) {
+    return {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    }
+  }
   async createUser(user: IUser) {
     const database = Database.getDatabase();
     const collectionUser = database.collection<IUser>(USER_COLLECTION);
@@ -18,6 +24,13 @@ class UserService {
     const database = Database.getDatabase();
     const collectionUser = database.collection<IUser>(USER_COLLECTION);
     return collectionUser.findOne({ email });
+  }
+
+  async getUsers() {
+    const database = Database.getDatabase();
+    const collectionUser = database.collection<IUser>(USER_COLLECTION);
+    const users = await collectionUser.find();
+    return (await users.toArray()).map(this.convertToClient);
   }
 }
 
