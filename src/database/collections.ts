@@ -1,6 +1,6 @@
 export const USER_COLLECTION = 'user';
 
-export interface User {
+export interface IUser {
   name: string;
   password: string;
   email: string;
