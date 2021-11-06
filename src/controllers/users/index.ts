@@ -1,22 +1,21 @@
 import { Request, Response } from 'express';
 
-import { createUser } from '../../services/users/create';
-import { getUserByEmail } from '../../services/users/get';
+import UserService from '../../services/users';
 
 class UserController {
   async store(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;
 
-      const userExists = await getUserByEmail(email);
+      const userExists = await UserService.getUserByEmail(email);
 
       if (userExists) {
         return res.sendStatus(409);
       }
 
-      const user = await createUser({ name, email, password });
+      await UserService.createUser({ name, email, password });
 
-      return res.json(user);
+      return res.sendStatus(201);
     } catch {
       console.log('deu erro');
       return res.sendStatus(500);
