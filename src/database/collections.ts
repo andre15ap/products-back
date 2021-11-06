@@ -8,3 +8,7 @@ export interface IUser {
   password: string;
   email: string;
 }
+
+export function getObjectIdByString(id: string) {
+  return new ObjectId(id);
+}

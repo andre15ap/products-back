@@ -1,5 +1,5 @@
 import Database from '../../database';
-import { IUser, USER_COLLECTION } from '../../database/collections';
+import { IUser, USER_COLLECTION, getObjectIdByString } from '../../database/collections';
 
 import { hashPassword } from '../../common/crypt';
 
@@ -31,6 +31,13 @@ class UserService {
     const collectionUser = database.collection<IUser>(USER_COLLECTION);
     const users = await collectionUser.find();
     return (await users.toArray()).map(this.convertToClient);
+  }
+
+  async removeUser(id: string) {
+    const database = Database.getDatabase();
+    const collectionUser = database.collection<IUser>(USER_COLLECTION);
+    const objectId = getObjectIdByString(id);
+    return collectionUser.deleteOne({ _id: objectId });
   }
 }
 

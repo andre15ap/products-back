@@ -25,8 +25,7 @@ class AuthController {
       delete user.password;
 
       return res.json({ user, token });
-    } catch (error) {
-      console.log(error);
+    } catch {
       return res.sendStatus(500);
     }
   }

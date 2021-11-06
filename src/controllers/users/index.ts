@@ -8,7 +8,6 @@ class UserController {
       const users = await UserService.getUsers();
       return res.json(users);
     } catch {
-      console.log('deu erro');
       return res.sendStatus(500);
     }
   }
@@ -26,7 +25,18 @@ class UserController {
 
       return res.sendStatus(201);
     } catch {
-      console.log('deu erro');
+      return res.sendStatus(500);
+    }
+  }
+
+  async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.body;
+
+      await UserService.removeUser(id);
+
+      return res.sendStatus(200);
+    } catch {
       return res.sendStatus(500);
     }
   }
