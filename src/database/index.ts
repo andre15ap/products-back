@@ -1,5 +1,4 @@
 import { MongoClient, Db } from 'mongodb';
-import dotenv from 'dotenv';
 
 class Database {
   private database: Db;
@@ -9,7 +8,6 @@ class Database {
   }
 
   async connectDatabase() {
-    dotenv.config();
     const client: MongoClient = new MongoClient(process.env.DB_CONN as string);
     const conn = await client.connect();
     const db = conn.db(process.env.DB_NAME);

@@ -1,5 +1,4 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 import { IUser } from '../../database/collections';
 
 export interface ITokenPayload {
@@ -9,7 +8,6 @@ export interface ITokenPayload {
 }
 
 export function generateUserToken(user: IUser) {
-  dotenv.config();
 
   const SECRET_TOKEN = process.env.SECRET_TOKEN as string;
 
@@ -17,7 +15,6 @@ export function generateUserToken(user: IUser) {
 }
 
 export function getJwtData(token: string): ITokenPayload {
-  dotenv.config();
 
   const SECRET_TOKEN = process.env.SECRET_TOKEN;
 

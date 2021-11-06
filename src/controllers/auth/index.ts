@@ -9,7 +9,7 @@ class AuthController {
     try {
       const { email, password } = req.body;
 
-      const user = await UserService.getUserByEmail(email);
+      const user = await UserService.getByEmail(email);
 
       if (!user) {
         return res.sendStatus(401);

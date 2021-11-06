@@ -1,27 +1,22 @@
 import { Request, Response } from 'express';
 
-import UserService from '../../services/users';
+import ProductService from '../../services/products';
 
-class UserController {
+class ProductController {
   async index(req: Request, res: Response) {
     try {
-      const users = await UserService.getAll();
-      return res.json(users);
+      const products = await ProductService.getAll();
+      return res.json(products);
     } catch {
       return res.sendStatus(500);
     }
   }
+
   async store(req: Request, res: Response) {
     try {
-      const { name, email, password } = req.body;
+      const { name, description, price } = req.body;
 
-      const userExists = await UserService.getByEmail(email);
-
-      if (userExists) {
-        return res.sendStatus(409);
-      }
-
-      await UserService.create({ name, email, password });
+      await ProductService.create({ name, description, price });
 
       return res.sendStatus(201);
     } catch {
@@ -33,7 +28,7 @@ class UserController {
     try {
       const { id } = req.body;
 
-      await UserService.remove(id);
+      await ProductService.remove(id);
 
       return res.sendStatus(200);
     } catch {
@@ -42,4 +37,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+export default new ProductController();

@@ -11,33 +11,33 @@ class UserService {
       email: user.email,
     }
   }
-  async createUser(user: IUser) {
+  async create(user: IUser) {
     const database = Database.getDatabase();
-    const collectionUser = database.collection<IUser>(USER_COLLECTION);
+    const userCollection = database.collection<IUser>(USER_COLLECTION);
 
     const password = hashPassword(user.password);
 
-    return collectionUser.insertOne({ ...user, password });
+    return userCollection.insertOne({ ...user, password });
   }
 
-  async getUserByEmail(email: string) {
+  async getByEmail(email: string) {
     const database = Database.getDatabase();
-    const collectionUser = database.collection<IUser>(USER_COLLECTION);
-    return collectionUser.findOne({ email });
+    const userCollection = database.collection<IUser>(USER_COLLECTION);
+    return userCollection.findOne({ email });
   }
 
-  async getUsers() {
+  async getAll() {
     const database = Database.getDatabase();
-    const collectionUser = database.collection<IUser>(USER_COLLECTION);
-    const users = await collectionUser.find();
+    const userCollection = database.collection<IUser>(USER_COLLECTION);
+    const users = await userCollection.find();
     return (await users.toArray()).map(this.convertToClient);
   }
 
-  async removeUser(id: string) {
+  async remove(id: string) {
     const database = Database.getDatabase();
-    const collectionUser = database.collection<IUser>(USER_COLLECTION);
+    const userCollection = database.collection<IUser>(USER_COLLECTION);
     const objectId = getObjectIdByString(id);
-    return collectionUser.deleteOne({ _id: objectId });
+    return userCollection.deleteOne({ _id: objectId });
   }
 }
 
