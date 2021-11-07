@@ -1,6 +1,8 @@
 import Database from '../../database';
 import { IProduct, PRODUCT_COLLECTION } from '../../database/collections/product';
 
+import S3Storage from '../../config/s3';
+
 class ProductService {
   convertToClient(product: IProduct) {
     return {
@@ -8,6 +10,7 @@ class ProductService {
       name: product.name,
       description: product.description,
       price: product.price,
+      image: product.image,
     }
   }
 
@@ -16,12 +19,16 @@ class ProductService {
     return database.collection<IProduct>(PRODUCT_COLLECTION);
   }
 
-  async create(product: IProduct) {
+  async create(product: IProduct, file: Express.Multer.File) {
     const collection = this.getCollection();
+    const s3Storage = new S3Storage();
+
 
     const price = Database.convertPriceToDouble(product.price as any);
 
-    return collection.insertOne({ ...product, price });
+    const image = await s3Storage.saveFile(file.filename);
+
+    return collection.insertOne({ ...product, price, image });
   }
 
   async getAll() {

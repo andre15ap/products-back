@@ -14,9 +14,10 @@ class ProductController {
 
   async store(req: Request, res: Response) {
     try {
+      const { file } = req;
       const { name, description, price } = req.body;
 
-      await ProductService.create({ name, description, price });
+      await ProductService.create({ name, description, price }, file);
 
       return res.sendStatus(201);
     } catch {
