@@ -1,7 +1,7 @@
 import Database from '../../database';
 import { IProduct, PRODUCT_COLLECTION } from '../../database/collections/product';
 
-import S3Storage from '../../config/s3';
+import S3Storage from '../../common/s3';
 
 class ProductService {
   convertToClient(product: IProduct) {
@@ -23,12 +23,11 @@ class ProductService {
     const collection = this.getCollection();
     const s3Storage = new S3Storage();
 
-
     const price = Database.convertPriceToDouble(product.price as any);
 
     const image = await s3Storage.saveFile(file.filename);
 
-    return collection.insertOne({ ...product, price, image });
+    return collection.insertOne({ ...product, price, image, filename: file.filename });
   }
 
   async getAll() {
@@ -39,8 +38,15 @@ class ProductService {
 
   async remove(id: string) {
     const collection = this.getCollection();
+    const s3Storage = new S3Storage();
+
     const objectId = Database.getObjectIdByString(id);
-    return collection.deleteOne({ _id: objectId });
+    const product = await collection.findOneAndDelete({ _id: objectId });
+
+    const { filename } = product?.value;
+    if (filename) {
+      return s3Storage.deleteFile(filename);
+    }
   }
 }
 

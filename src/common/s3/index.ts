@@ -3,7 +3,9 @@ import path from 'path';
 import mime from 'mime';
 import fs from 'fs';
 
-import configMulter from './multer';
+import configMulter from '../../config/multer';
+
+const BUCKET_NAME = 'bucket-image-products';
 
 class S3Storage {
   private client: S3;
@@ -24,21 +26,25 @@ class S3Storage {
     }
 
     const fileContent = fs.createReadStream(originalPath);
-    try {
-      const response = await this.client.upload({
-        Bucket: 'bucket-image-products',
-        Key: filename,
-        ACL: 'public-read',
-        Body: fileContent,
-        ContentType: contentType,
-      }).promise();
 
-      await fs.promises.unlink(originalPath);
+    const response = await this.client.upload({
+      Bucket: BUCKET_NAME,
+      Key: filename,
+      ACL: 'public-read',
+      Body: fileContent,
+      ContentType: contentType,
+    }).promise();
 
-      return response.Location;
-    } catch (error) {
-      console.log(error);
-    }
+    await fs.promises.unlink(originalPath);
+
+    return response.Location;
+  }
+
+  async deleteFile(filename: string): Promise<void> {
+    await this.client.deleteObject({
+      Bucket: BUCKET_NAME,
+      Key: filename,
+    }).promise();
   }
 }
 

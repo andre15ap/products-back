@@ -7,5 +7,6 @@ export interface IProduct {
   name: string;
   description?: string;
   image?: string;
+  filename?: string;
   price: Double;
 }
