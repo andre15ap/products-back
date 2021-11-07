@@ -30,6 +30,13 @@ class UserService {
     return collection.findOne({ email });
   }
 
+  async getById(id: string) {
+    const collection = this.getCollection();
+
+    const objectId = Database.getObjectIdByString(id);
+    return collection.findOne({ _id: objectId });
+  }
+
   async getAll() {
     const collection = this.getCollection();
     const users = await collection.find();

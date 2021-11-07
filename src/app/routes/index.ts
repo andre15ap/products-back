@@ -5,21 +5,21 @@ import ProductController from '../controllers/products';
 import AppHitController from '../controllers/app-hits';
 import AuthController from '../controllers/auth';
 
-import authMiddleware from '../middlewares/auth';
+import { authMiddleware, authAdminMiddleware } from '../middlewares/auth';
 
 const router = Router();
 
-router.get('/users', authMiddleware, UserController.index);
-router.delete('/users', authMiddleware, UserController.delete);
+router.get('/users', authAdminMiddleware, UserController.index);
 router.post('/users', UserController.store);
+router.delete('/users', authAdminMiddleware, UserController.delete);
 
 router.get('/products', authMiddleware, ProductController.index);
-router.post('/products', authMiddleware, ProductController.store);
-router.delete('/products', authMiddleware, ProductController.delete);
+router.post('/products', authAdminMiddleware, ProductController.store);
+router.delete('/products', authAdminMiddleware, ProductController.delete);
 
 router.get('/app-hits', authMiddleware, AppHitController.index);
 router.post('/app-hits', authMiddleware, AppHitController.store);
-router.delete('/app-hits', authMiddleware, AppHitController.delete);
+router.delete('/app-hits', authAdminMiddleware, AppHitController.delete);
 
 router.post('/auth', AuthController.authenticate);
 
