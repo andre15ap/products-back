@@ -23,6 +23,18 @@ class AppHitController {
       return res.sendStatus(500);
     }
   }
+
+  async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.body;
+
+      await AppHitService.remove(id);
+
+      return res.sendStatus(200);
+    } catch {
+      return res.sendStatus(500);
+    }
+  }
 }
 
 export default new AppHitController();

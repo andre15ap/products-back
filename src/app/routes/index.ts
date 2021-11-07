@@ -19,6 +19,7 @@ router.delete('/products', authMiddleware, ProductController.delete);
 
 router.get('/app-hits', authMiddleware, AppHitController.index);
 router.post('/app-hits', authMiddleware, AppHitController.store);
+router.delete('/app-hits', authMiddleware, AppHitController.delete);
 
 router.post('/auth', AuthController.authenticate);
 

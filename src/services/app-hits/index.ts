@@ -34,6 +34,12 @@ class CountService {
     const appHits = await collection.find();
     return (await appHits.toArray()).map(this.convertToClient);
   }
+
+  async remove(id: string) {
+    const collection = this.getCollection();
+    const objectId = Database.getObjectIdByString(id);
+    return collection.deleteOne({ _id: objectId });
+  }
 }
 
 export default new CountService();
