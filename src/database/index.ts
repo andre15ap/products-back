@@ -1,4 +1,4 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, Db, ObjectId, Double } from 'mongodb';
 
 class Database {
   private database: Db;
@@ -20,6 +20,14 @@ class Database {
 
   getDatabase() {
     return this.database;
+  }
+
+  getObjectIdByString(id: string) {
+    return new ObjectId(id);
+  }
+
+  convertPriceToDouble(price: number) {
+    return new Double(price);
   }
 }
 

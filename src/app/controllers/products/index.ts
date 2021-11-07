@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import ProductService from '../../services/products';
+import ProductService from '../../../services/products';
 
 class ProductController {
   async index(req: Request, res: Response) {

@@ -1,10 +1,5 @@
 import Database from '../../database';
-import {
-  IProduct,
-  PRODUCT_COLLECTION,
-  convertPriceToDouble,
-  getObjectIdByString,
-} from '../../database/collections';
+import { IProduct, PRODUCT_COLLECTION } from '../../database/collections/product';
 
 class ProductService {
   convertToClient(product: IProduct) {
@@ -15,27 +10,30 @@ class ProductService {
       price: product.price,
     }
   }
-  async create(product: IProduct) {
+
+  getCollection() {
     const database = Database.getDatabase();
-    const productCollection = database.collection<IProduct>(PRODUCT_COLLECTION);
+    return database.collection<IProduct>(PRODUCT_COLLECTION);
+  }
 
-    const price = convertPriceToDouble(product.price as any);
+  async create(product: IProduct) {
+    const collection = this.getCollection();
 
-    return productCollection.insertOne({ ...product, price });
+    const price = Database.convertPriceToDouble(product.price as any);
+
+    return collection.insertOne({ ...product, price });
   }
 
   async getAll() {
-    const database = Database.getDatabase();
-    const productCollection = database.collection<IProduct>(PRODUCT_COLLECTION);
-    const products = await productCollection.find();
+    const collection = this.getCollection();
+    const products = await collection.find();
     return (await products.toArray()).map(this.convertToClient);
   }
 
   async remove(id: string) {
-    const database = Database.getDatabase();
-    const productCollection = database.collection<IProduct>(PRODUCT_COLLECTION);
-    const objectId = getObjectIdByString(id);
-    return productCollection.deleteOne({ _id: objectId });
+    const collection = this.getCollection();
+    const objectId = Database.getObjectIdByString(id);
+    return collection.deleteOne({ _id: objectId });
   }
 }
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import UserService from '../../services/users';
+import UserService from '../../../services/users';
 
 class UserController {
   async index(req: Request, res: Response) {

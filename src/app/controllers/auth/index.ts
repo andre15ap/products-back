@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import UserService from '../../services/users';
-import { validatePassword } from '../../common/crypt';
-import { generateUserToken } from '../../common/jwt';
+import UserService from '../../../services/users';
+import { validatePassword } from '../../../common/crypt';
+import { generateUserToken } from '../../../common/jwt';
 
 class AuthController {
   async authenticate(req: Request, res: Response) {

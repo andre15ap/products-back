@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { getJwtData, ITokenPayload } from '../../common/jwt';
+import { getJwtData, ITokenPayload } from '../../../common/jwt';
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;

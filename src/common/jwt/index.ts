@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { IUser } from '../../database/collections';
+import { IUser } from '../../database/collections/user';
 
 export interface ITokenPayload {
   id: string;

@@ -1,5 +1,5 @@
 import Database from '../../database';
-import { IUser, USER_COLLECTION, getObjectIdByString } from '../../database/collections';
+import { IUser, USER_COLLECTION } from '../../database/collections/user';
 
 import { hashPassword } from '../../common/crypt';
 
@@ -11,33 +11,35 @@ class UserService {
       email: user.email,
     }
   }
-  async create(user: IUser) {
+
+  getCollection() {
     const database = Database.getDatabase();
-    const userCollection = database.collection<IUser>(USER_COLLECTION);
+    return database.collection<IUser>(USER_COLLECTION);
+  }
+
+  async create(user: IUser) {
+    const collection = this.getCollection();
 
     const password = hashPassword(user.password);
 
-    return userCollection.insertOne({ ...user, password });
+    return collection.insertOne({ ...user, password });
   }
 
   async getByEmail(email: string) {
-    const database = Database.getDatabase();
-    const userCollection = database.collection<IUser>(USER_COLLECTION);
-    return userCollection.findOne({ email });
+    const collection = this.getCollection();
+    return collection.findOne({ email });
   }
 
   async getAll() {
-    const database = Database.getDatabase();
-    const userCollection = database.collection<IUser>(USER_COLLECTION);
-    const users = await userCollection.find();
+    const collection = this.getCollection();
+    const users = await collection.find();
     return (await users.toArray()).map(this.convertToClient);
   }
 
   async remove(id: string) {
-    const database = Database.getDatabase();
-    const userCollection = database.collection<IUser>(USER_COLLECTION);
-    const objectId = getObjectIdByString(id);
-    return userCollection.deleteOne({ _id: objectId });
+    const collection = this.getCollection();
+    const objectId = Database.getObjectIdByString(id);
+    return collection.deleteOne({ _id: objectId });
   }
 }
 

@@ -1,10 +1,11 @@
 import { Router } from 'express';
 
-import UserController from './controllers/users';
-import ProductController from './controllers/products';
-import AuthController from './controllers/auth';
+import UserController from '../controllers/users';
+import ProductController from '../controllers/products';
+import AppHitController from '../controllers/app-hits';
+import AuthController from '../controllers/auth';
 
-import authMiddleware from './middlewares/auth';
+import authMiddleware from '../middlewares/auth';
 
 const router = Router();
 
@@ -15,6 +16,9 @@ router.post('/users', UserController.store);
 router.get('/products', authMiddleware, ProductController.index);
 router.post('/products', authMiddleware, ProductController.store);
 router.delete('/products', authMiddleware, ProductController.delete);
+
+router.get('/app-hits', authMiddleware, AppHitController.index);
+router.post('/app-hits', authMiddleware, AppHitController.store);
 
 router.post('/auth', AuthController.authenticate);
 

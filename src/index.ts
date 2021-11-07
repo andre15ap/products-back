@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import './database';
-import routers from './routes';
+import routers from './app/routes';
 
 const app = express();
 
