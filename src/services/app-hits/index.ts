@@ -2,7 +2,7 @@ import Database from '../../database';
 
 import { IAppHits, APP_HIT_COLECTION } from '../../database/collections/app-hits';
 
-class CountService {
+class AppHitService {
   getCollection() {
     const database = Database.getDatabase();
     return database.collection<IAppHits>(APP_HIT_COLECTION);
@@ -42,4 +42,4 @@ class CountService {
   }
 }
 
-export default new CountService();
+export default new AppHitService();
