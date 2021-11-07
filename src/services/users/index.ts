@@ -9,6 +9,7 @@ class UserService {
       id: user._id,
       name: user.name,
       email: user.email,
+      isAdmin: user.isAdmin,
     }
   }
 
@@ -23,6 +24,14 @@ class UserService {
     const password = hashPassword(user.password);
 
     return collection.insertOne({ ...user, password });
+  }
+
+  async createAdmin(user: IUser) {
+    const collection = this.getCollection();
+
+    const password = hashPassword(user.password);
+
+    return collection.insertOne({ ...user, password, isAdmin: true });
   }
 
   async getByEmail(email: string) {

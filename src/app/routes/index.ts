@@ -10,8 +10,9 @@ import upload from '../middlewares/upload';
 
 const router = Router();
 
-router.get('/users', authAdminMiddleware, UserController.index);
 router.post('/users', UserController.store);
+router.post('/users/admin', UserController.storeAdmin);
+router.get('/users', authAdminMiddleware, UserController.index);
 router.delete('/users', authAdminMiddleware, UserController.delete);
 
 router.get('/products', authMiddleware, ProductController.index);

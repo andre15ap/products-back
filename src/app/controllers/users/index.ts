@@ -11,6 +11,7 @@ class UserController {
       return res.sendStatus(500);
     }
   }
+
   async store(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;
@@ -22,6 +23,24 @@ class UserController {
       }
 
       await UserService.create({ name, email, password });
+
+      return res.sendStatus(201);
+    } catch {
+      return res.sendStatus(500);
+    }
+  }
+
+  async storeAdmin(req: Request, res: Response) {
+    try {
+      const { name, email, password } = req.body;
+
+      const userExists = await UserService.getByEmail(email);
+
+      if (userExists) {
+        return res.sendStatus(409);
+      }
+
+      await UserService.createAdmin({ name, email, password });
 
       return res.sendStatus(201);
     } catch {

@@ -15,7 +15,6 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     const token = authorization.replace('Bearer', '').trim();
     const data = getJwtData(token);
     const { id } = data;
-    req.userId = id;
     return next();
   } catch {
     return res.sendStatus(401);
@@ -37,7 +36,6 @@ export async function authAdminMiddleware(req: Request, res: Response, next: Nex
     if (!user?.isAdmin) {
       return res.sendStatus(403);
     }
-    req.userId = id;
     return next();
   } catch {
     return res.sendStatus(401);
