@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import UserService from '../../../services/users';
+// import UserService from '../../services/users';
 import { validatePassword } from '../../../common/crypt';
 import { generateUserToken } from '../../../common/jwt';
 
@@ -9,22 +9,22 @@ class AuthController {
     try {
       const { email, password } = req.body;
 
-      const user = await UserService.getByEmail(email);
+      // const user = await UserService.getByEmail(email);
 
-      if (!user) {
-        return res.sendStatus(401);
-      }
+      // if (!user) {
+      //   return res.sendStatus(401);
+      // }
 
-      const isValidPassword = await validatePassword(password, user.password);
+      // const isValidPassword = await validatePassword(password, user.password);
 
-      if (!isValidPassword) {
-        return res.sendStatus(401);
-      }
+      // if (!isValidPassword) {
+      //   return res.sendStatus(401);
+      // }
 
-      const token = generateUserToken(user);
-      delete user.password;
+      // const token = generateUserToken(user);
+      // delete user.password;
 
-      return res.json({ user, token });
+      // return res.json({ user, token });
     } catch {
       return res.sendStatus(500);
     }

@@ -1,43 +1,29 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { AppError } from '../../../errors/app-errors';
 import { getJwtData } from '../../../common/jwt';
+import { UserRepository } from '../../repositories/users';
 
-import UserService from '../../../services/users';
-
-export function authMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.sendStatus(401);
+    throw new AppError('Token missing', 401);
   }
 
   try {
     const token = authorization.replace('Bearer', '').trim();
     const data = getJwtData(token);
     const { id } = data;
-    return next();
-  } catch {
-    return res.sendStatus(401);
-  }
-}
 
-export async function authAdminMiddleware(req: Request, res: Response, next: NextFunction) {
-  const { authorization } = req.headers;
-
-  if (!authorization) {
-    return res.sendStatus(401);
-  }
-
-  try {
-    const token = authorization.replace('Bearer', '').trim();
-    const data = getJwtData(token);
-    const { id } = data;
-    const user = await UserService.getById(id);
-    if (!user?.isAdmin) {
-      return res.sendStatus(403);
+    const userRepository = new UserRepository();
+    const user = await userRepository.findById(id);
+    if (!user) {
+      throw new AppError('User does not exists', 401);
     }
-    return next();
+    next();
   } catch {
-    return res.sendStatus(401);
+    // return res.json(error);
+    throw new AppError('Invalid Token', 401);
   }
 }

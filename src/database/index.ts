@@ -1,10 +1,18 @@
 import { MongoClient, Db, ObjectId, Double } from 'mongodb';
 
 class Database {
+  private static INSTANCE: Database;
   private database: Db;
 
   constructor() {
     this.connectDatabase().then(() => console.log('db conected'));
+  }
+
+  public static getInstance(): Database {
+    if (!Database.INSTANCE) {
+      Database.INSTANCE = new Database();
+    }
+    return Database.INSTANCE;
   }
 
   async connectDatabase() {
@@ -31,4 +39,4 @@ class Database {
   }
 }
 
-export default new Database();
+export { Database };

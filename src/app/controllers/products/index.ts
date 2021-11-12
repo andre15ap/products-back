@@ -1,41 +1,46 @@
 import { Request, Response } from 'express';
 
-import ProductService from '../../../services/products';
+import { ProductService } from '../../services/products'
 
 class ProductController {
-  async index(req: Request, res: Response) {
-    try {
-      const products = await ProductService.getAll();
-      return res.json(products);
-    } catch {
-      return res.sendStatus(500);
-    }
+  private productService: ProductService;
+
+  constructor(productServce: ProductService) {
+    this.productService = productServce;
   }
 
   async store(req: Request, res: Response) {
     try {
-      const { file } = req;
       const { name, description, price } = req.body;
 
-      await ProductService.create({ name, description, price }, file);
+      this.productService.create({ name, description, price });
 
       return res.sendStatus(201);
     } catch {
       return res.sendStatus(500);
     }
+    // async index(req: Request, res: Response) {
+    //   try {
+    //     const products = await ProductService.getAll();
+    //     return res.json(products);
+    //   } catch {
+    //     return res.sendStatus(500);
+    //   }
+    // }
+
   }
 
-  async delete(req: Request, res: Response) {
-    try {
-      const { id } = req.body;
+  // async delete(req: Request, res: Response) {
+  //   try {
+  //     const { id } = req.body;
 
-      await ProductService.remove(id);
+  //     await ProductService.remove(id);
 
-      return res.sendStatus(200);
-    } catch {
-      return res.sendStatus(500);
-    }
-  }
+  //     return res.sendStatus(200);
+  //   } catch {
+  //     return res.sendStatus(500);
+  //   }
+  // }
 }
 
-export default new ProductController();
+export { ProductController };

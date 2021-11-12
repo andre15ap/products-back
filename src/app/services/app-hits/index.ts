@@ -1,6 +1,6 @@
-import Database from '../../database';
+import Database from '../../../database';
 
-import { IAppHits, APP_HIT_COLECTION } from '../../database/collections/app-hits';
+import { IAppHits, APP_HIT_COLECTION } from '../../../database/collections/app-hits';
 
 class AppHitService {
   getCollection() {

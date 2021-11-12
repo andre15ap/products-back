@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import AppHitService from '../../../services/app-hits';
+import AppHitService from '../../services/app-hits';
 
 class AppHitController {
   async index(req: Request, res: Response) {
