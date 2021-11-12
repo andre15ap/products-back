@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
-import createUserController from '../user-cases/create-user';
-import listUsersController from '../user-cases/list-users';
-import removeUsersController from '../user-cases/remove-user';
+import createUserController from '../../use-cases/create-user';
+import listUsersController from '../../use-cases/list-users';
+import removeUsersController from '../../use-cases/remove-user';
 
-import { authMiddleware } from '../middlewares/auth';
+import { authMiddleware } from '../../middlewares/auth';
 
 const usersRoutes = Router();
 

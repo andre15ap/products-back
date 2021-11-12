@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import createProductController from '../user-cases/create-product';
-import listProductsController from '../user-cases/list-products';
-import removeProductsController from '../user-cases/remove-user';
+import createProductController from '../../use-cases/create-product';
+import listProductsController from '../../use-cases/list-products';
+import removeProductsController from '../../use-cases/remove-user';
 
-import upload from '../middlewares/upload';
-import { authMiddleware } from '../middlewares/auth';
+import upload from '../../middlewares/upload';
+import { authMiddleware } from '../../middlewares/auth';
 
 const productsRoutes = Router();
 
