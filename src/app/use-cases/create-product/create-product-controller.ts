@@ -24,7 +24,7 @@ class CreateProductController {
       throw new AppError('Image is required');
     }
 
-    await this.createProductUseCase.execute({ name, description, price, file });
+    await this.createProductUseCase.execute({ name, description, price: Number(price), file });
 
     return res.sendStatus(201);
   }

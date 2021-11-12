@@ -10,16 +10,11 @@ class RemoveUserController {
   }
 
   async handle(req: Request, res: Response) {
-    try {
-      const { id } = req.body;
+    const { id } = req.body;
 
-      await this.removeUserUseCase.execute(id);
+    await this.removeUserUseCase.execute(id);
 
-      return res.sendStatus(200);
-    } catch (err) {
-      console.log(err);
-      return res.sendStatus(500);
-    }
+    return res.sendStatus(200);
   }
 }
 

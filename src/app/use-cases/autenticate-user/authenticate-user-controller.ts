@@ -10,16 +10,11 @@ class AuthenticateUserController {
   }
 
   async handle(req: Request, res: Response) {
-    try {
-      const { email, password } = req.body;
+    const { email, password } = req.body;
 
-      const response = await this.authenticateUserUseCase.execute({ email, password });
+    const response = await this.authenticateUserUseCase.execute({ email, password });
 
-      return res.json(response);
-    } catch (err) {
-      console.log(err);
-      return res.sendStatus(500);
-    }
+    return res.json(response);
   }
 }
 

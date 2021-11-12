@@ -28,6 +28,12 @@ class ProductRepository implements IProducRepository {
     return foundProdut;
   }
 
+  async findById(id: string): Promise<Product> {
+    const collection = this.getCollection();
+    const foundProdut = await collection.findOne({ id });
+    return foundProdut;
+  }
+
   async list(): Promise<Product[]> {
     const collection = this.getCollection();
     const products = await collection.find().toArray();

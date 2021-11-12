@@ -16,6 +16,12 @@ class S3Storage {
     });
   }
 
+  getKey(imgUrl: string): string {
+    const index = imgUrl.indexOf('.com/');
+    const key = imgUrl.slice(index + 5);
+    return key;
+  }
+
   async saveFile(filename: string): Promise<string> {
     const originalPath = path.resolve(configMulter.directory, filename);
 
@@ -40,10 +46,11 @@ class S3Storage {
     return response.Location;
   }
 
-  async deleteFile(filename: string): Promise<void> {
+  async deleteFile(url: string): Promise<void> {
+    const key = this.getKey(url);
     await this.client.deleteObject({
       Bucket: BUCKET_NAME,
-      Key: filename,
+      Key: key,
     }).promise();
   }
 }
