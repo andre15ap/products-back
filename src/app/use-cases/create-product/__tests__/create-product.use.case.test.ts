@@ -42,22 +42,22 @@ describe('Create Product', () => {
 
     await createProductUseCase.execute(product);
 
-    const products = await productRepositoryInMemory.list();
+    const createdProduct = await productRepositoryInMemory.findByName(product.name);
 
-    expect(products[0]).toHaveProperty('id');
-    expect(products[0].name).toBe('product test');
-    expect(products[0].description).toBe('fake description');
-    expect(products[0].price).toBe(15);
-    expect(products[0].image).toBe('fake_url');
+    expect(createdProduct).toHaveProperty('id');
+    expect(createdProduct.name).toBe('product test');
+    expect(createdProduct.description).toBe('fake description');
+    expect(createdProduct.price).toBe(15);
+    expect(createdProduct.image).toBe('fake_url');
 
     expect(storageFile.saveFile).toHaveBeenCalled();
     expect(storageFile.saveFile).toHaveBeenCalledWith('fake_filename');
   });
 
-  it('should not be able to create a product with a same name of an existing user', async () => {
+  it('should not be able to create a product with a same name of an existing product', async () => {
     await productRepositoryInMemory.create(product);
 
-    expect(async () => {
+    await expect(async () => {
       await createProductUseCase.execute(product);
     }).rejects.toBeInstanceOf(AppError);
   })
