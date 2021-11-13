@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import { AppError } from '../../../errors/app-errors';
 import { getJwtData } from '../../../common/jwt';
-import { UserRepository } from '../../repositories/users';
+import { UserRepository } from '../../repositories/users/user-repository';
 
 export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
@@ -23,7 +23,6 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
     }
     next();
   } catch {
-    // return res.json(error);
     throw new AppError('Invalid Token', 401);
   }
 }

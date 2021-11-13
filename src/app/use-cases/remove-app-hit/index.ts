@@ -1,4 +1,4 @@
-import { AppHitRepository } from '../../repositories/app-hit';
+import { AppHitRepository } from '../../repositories/app-hit/app-hit-repository';
 import { RemoveAppHitUseCase } from './remove-app-hit-use-case';
 import { RemoveAppHitsController } from './remove-app-hit-controller';
 

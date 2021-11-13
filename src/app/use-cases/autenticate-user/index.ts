@@ -1,7 +1,6 @@
-import { UserRepository } from '../../repositories/users';
+import { UserRepository } from '../../repositories/users/user-repository';
 import { AuthenticateUserUserUseCase } from './authenticate-user-use-case';
 import { AuthenticateUserController } from './authenticate-user-controller';
-
 
 function authenticateUserController() {
   const userRepository = new UserRepository();

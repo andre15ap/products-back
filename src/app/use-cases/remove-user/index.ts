@@ -1,4 +1,4 @@
-import { UserRepository } from '../../repositories/users';
+import { UserRepository } from '../../repositories/users/user-repository';
 import { RemoveUserUseCase } from './remove-user-use-case';
 import { RemoveUserController } from './remove-user-controller';
 

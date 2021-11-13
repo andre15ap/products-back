@@ -1,4 +1,4 @@
-import { ProductRepository } from '../../repositories/products';
+import { ProductRepository } from '../../repositories/products/product-repository';
 import { CreateProductUseCase } from './create-product-use-case';
 import { CreateProductController } from './create-product-controller';
 

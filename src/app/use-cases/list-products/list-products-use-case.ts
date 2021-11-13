@@ -12,7 +12,6 @@ class ListProductsUseCase {
     const products = await this.productRepository.list();
     return products;
   }
-
 }
 
 export { ListProductsUseCase };
