@@ -12,7 +12,6 @@ class ListAppHitUseCase {
     const appHits = await this.appHitRepository.list();
     return appHits;
   }
-
 }
 
 export { ListAppHitUseCase };
