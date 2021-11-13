@@ -11,6 +11,7 @@ class RemoveProductController {
 
   async handle(req: Request, res: Response) {
     const { id } = req.body;
+
     await this.removeProductUseCase.execute(id);
 
     return res.sendStatus(200);

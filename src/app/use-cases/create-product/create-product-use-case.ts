@@ -1,7 +1,7 @@
 import { AppError } from '../../../errors/app-errors';
 import { IProducRepository } from '../../repositories/products/interface';
 
-import S3Storage from '../../../common/s3';
+import { IStorage } from '../../../common/storage/interface';
 
 interface IRequest {
   name: string,
@@ -12,9 +12,11 @@ interface IRequest {
 
 class CreateProductUseCase {
   private productRepository: IProducRepository;
+  private storageFile: IStorage;
 
-  constructor(productRepository: IProducRepository) {
+  constructor(productRepository: IProducRepository, storage: IStorage) {
     this.productRepository = productRepository;
+    this.storageFile = storage;
   }
 
   async execute({ name, description, price, file }: IRequest) {
@@ -24,9 +26,7 @@ class CreateProductUseCase {
       throw new AppError('Product already exists');
     }
 
-    const s3Storage = new S3Storage();
-
-    const image = await s3Storage.saveFile(file.filename);
+    const image = await this.storageFile.saveFile(file.filename);
 
     await this.productRepository.create({ name, description, image, price });
   }

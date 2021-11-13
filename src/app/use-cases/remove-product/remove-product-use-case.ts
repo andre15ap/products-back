@@ -1,21 +1,21 @@
 import { IProducRepository } from '../../repositories/products/interface';
-
-import S3Storage from '../../../common/s3';
+import { IStorage } from '../../../common/storage/interface';
 
 class RemoveProductUseCase {
   private productRepository: IProducRepository;
+  private storageFile: IStorage;
 
-  constructor(productRepository: IProducRepository) {
+  constructor(productRepository: IProducRepository, storage: IStorage) {
     this.productRepository = productRepository;
+    this.storageFile = storage;
   }
 
   async execute(id: string) {
-    const s3Storage = new S3Storage();
 
     const product = await this.productRepository.findById(id);
 
-    if (product.image) {
-      await s3Storage.deleteFile(product.image)
+    if (product && product.image) {
+      await this.storageFile.deleteFile(product.image)
     }
     await this.productRepository.remove(id);
   }

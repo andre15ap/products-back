@@ -1,22 +1,20 @@
-import aws, { S3 } from 'aws-sdk';
+import aws from 'aws-sdk';
 import path from 'path';
 import mime from 'mime';
 import fs from 'fs';
 
 import configMulter from '../../config/multer';
+import { IStorage } from './interface';
 
-const BUCKET_NAME = 'bucket-image-products';
+class StorageFile implements IStorage {
+  private readonly AWS_REGION = process.env.AWS_REGION;
+  private readonly BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 
-class S3Storage {
-  private client: S3;
-
-  constructor() {
-    this.client = new aws.S3({
-      region: 'sa-east-1',
-    });
+  private getInstance() {
+    return new aws.S3({ region: this.AWS_REGION });
   }
 
-  getKey(imgUrl: string): string {
+  private getKey(imgUrl: string): string {
     const index = imgUrl.indexOf('.com/');
     const key = imgUrl.slice(index + 5);
     return key;
@@ -33,8 +31,10 @@ class S3Storage {
 
     const fileContent = fs.createReadStream(originalPath);
 
-    const response = await this.client.upload({
-      Bucket: BUCKET_NAME,
+    const s3 = this.getInstance();
+
+    const response = await s3.upload({
+      Bucket: this.BUCKET_NAME,
       Key: filename,
       ACL: 'public-read',
       Body: fileContent,
@@ -48,11 +48,14 @@ class S3Storage {
 
   async deleteFile(url: string): Promise<void> {
     const key = this.getKey(url);
-    await this.client.deleteObject({
-      Bucket: BUCKET_NAME,
+
+    const s3 = this.getInstance();
+
+    await s3.deleteObject({
+      Bucket: this.BUCKET_NAME,
       Key: key,
     }).promise();
   }
 }
 
-export default S3Storage;
+export { StorageFile };
