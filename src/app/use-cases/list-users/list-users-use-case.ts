@@ -1,6 +1,11 @@
 import { User } from '../../models/user';
 import { IUserRepository } from '../../repositories/users/interface';
 
+interface IResponseUser {
+  id: string;
+  name: string;
+  email: string;
+}
 class ListUsersUseCase {
   private userRepository: IUserRepository;
 
@@ -8,9 +13,17 @@ class ListUsersUseCase {
     this.userRepository = userRepository;
   }
 
-  async execute(): Promise<User[]> {
+  toClient(users: User[]): IResponseUser[] {
+    return users.map(user => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    }))
+  }
+
+  async execute(): Promise<IResponseUser[]> {
     const users = await this.userRepository.list();
-    return users;
+    return this.toClient(users);
   }
 }
 
