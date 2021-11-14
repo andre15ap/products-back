@@ -16,10 +16,11 @@ class MockStorageFile implements IStorage {
 describe('Remove Product', () => {
   let removeProductUseCase: RemoveProductUseCase;
   let productRepositoryInMemory: ProductRepositoryInMemory;
+  let storageFile: MockStorageFile;
 
   beforeAll(() => {
     productRepositoryInMemory = new ProductRepositoryInMemory();
-    const storageFile = new MockStorageFile();
+    storageFile = new MockStorageFile();
     removeProductUseCase = new RemoveProductUseCase(productRepositoryInMemory, storageFile);
   });
 
@@ -29,6 +30,8 @@ describe('Remove Product', () => {
       image: 'fake_image',
       price: 10,
     };
+
+    jest.spyOn(storageFile, 'deleteFile');
 
     await productRepositoryInMemory.create(product);
 
@@ -41,5 +44,8 @@ describe('Remove Product', () => {
 
     const productsAfter = await productRepositoryInMemory.list();
     expect(productsAfter).toHaveLength(0);
+
+    expect(storageFile.deleteFile).toHaveBeenCalled();
+    expect(storageFile.deleteFile).toHaveBeenCalledWith('fake_image');
   });
 });

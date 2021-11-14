@@ -57,8 +57,12 @@ describe('Create Product', () => {
   it('should not be able to create a product with a same name of an existing product', async () => {
     await productRepositoryInMemory.create(product);
 
+    jest.spyOn(storageFile, 'saveFile');
+
     await expect(async () => {
       await createProductUseCase.execute(product);
     }).rejects.toBeInstanceOf(AppError);
+
+    expect(storageFile.saveFile).not.toHaveBeenCalled();
   })
 });
