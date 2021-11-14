@@ -48,4 +48,27 @@ describe('Remove Product', () => {
     expect(storageFile.deleteFile).toHaveBeenCalled();
     expect(storageFile.deleteFile).toHaveBeenCalledWith('fake_image');
   });
+
+  it('should does not call storage image removal if there is no image', async () => {
+    const product = {
+      name: 'product_name',
+      price: 10,
+    };
+
+    jest.spyOn(storageFile, 'deleteFile');
+
+    await productRepositoryInMemory.create(product);
+
+    const products = await productRepositoryInMemory.list();
+    expect(products).toHaveLength(1);
+
+    const id = products[0].id;
+
+    await removeProductUseCase.execute(id);
+
+    const productsAfter = await productRepositoryInMemory.list();
+    expect(productsAfter).toHaveLength(0);
+
+    expect(storageFile.deleteFile).not.toHaveBeenCalled();
+  });
 });

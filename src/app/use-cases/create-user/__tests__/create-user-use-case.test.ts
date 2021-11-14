@@ -18,7 +18,6 @@ describe('Create User', () => {
   };
 
   it('should be able to create an user', async () => {
-
     await createUserUseCase.execute(user);
 
     const createdUser = await userRepositoryInMemory.findByEmail('user@mail');
