@@ -12,7 +12,7 @@ describe('Authenticate User', () => {
 
   beforeAll(() => {
     process.env.SECRET_TOKEN = 'mock_secret';
-  })
+  });
 
   beforeEach(() => {
     userRepositoryInMemory = new UserRepositoryInMemory();

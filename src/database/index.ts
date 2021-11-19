@@ -3,10 +3,9 @@ import { MongoClient, Db, ObjectId, Double } from 'mongodb';
 class Database {
   private static INSTANCE: Database;
   private database: Db;
+  private client: MongoClient;
 
-  constructor() {
-    this.connectDatabase().then(() => console.log('db conected'));
-  }
+  private constructor() { }
 
   public static getInstance(): Database {
     if (!Database.INSTANCE) {
@@ -16,9 +15,10 @@ class Database {
   }
 
   async connectDatabase() {
-    const client: MongoClient = new MongoClient(process.env.DB_CONN as string);
-    const conn = await client.connect();
+    this.client = new MongoClient(process.env.MONGODB_URI, { connectTimeoutMS: 5000 });
+    const conn = await this.client.connect();
     const db = conn.db(process.env.DB_NAME);
+    console.log('Database connected...');
     this.setDatabase(db);
   }
 
@@ -28,6 +28,10 @@ class Database {
 
   getDatabase() {
     return this.database;
+  }
+
+  async close() {
+    return this.client.close();
   }
 
   getObjectIdByString(id: string) {

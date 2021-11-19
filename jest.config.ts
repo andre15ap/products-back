@@ -3,6 +3,7 @@
  * https://jestjs.io/docs/configuration
  */
 
+const { defaults: tsPreset } = require('ts-jest/presets');
 export default {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -97,7 +98,9 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: "ts-jest",
+  // preset: "ts-jest",
+  preset: "@shelf/jest-mongodb",
+  transform: tsPreset.transform,
 
   // Run tests from one or more projects
   // projects: undefined,
